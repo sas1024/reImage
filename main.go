@@ -11,8 +11,9 @@ import (
 )
 
 type Config struct {
-	Listen          string
-	SkipEmptyImages bool
+	Listen           string
+	SkipEmptyImages  bool
+	SkipResizeErrors bool
 }
 
 const (
@@ -73,5 +74,6 @@ func getRouter() *fasthttprouter.Router {
 func parseFlags() {
 	flag.StringVar(&config.Listen, "CFG_LISTEN", "127.0.0.1:7075", "Listen interface and port")
 	flag.BoolVar(&config.SkipEmptyImages, "CFG_SKIP_EMPTY_IMAGES", false, "Skip empty images resizing")
+	flag.BoolVar(&config.SkipResizeErrors, "CFG_SKIP_RESIZE_ERRORS", false, "Skip resizing errors")
 	flag.Parse()
 }

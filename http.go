@@ -52,7 +52,12 @@ func getResizeHandler(ctx *fasthttp.RequestCtx) {
 
 	if err := resizeImage(&params); err != nil {
 		log.Printf("Can not resize image: '%s', err: %s", params.imageUrl.String(), err)
-		ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+		if config.SkipResizeErrors {
+			ctx.SetContentType(params.imageContentType)
+			ctx.SetStatusCode(fasthttp.StatusOK)
+		} else {
+			ctx.SetStatusCode(fasthttp.StatusInternalServerError)
+		}
 		return
 	}
 	ctx.SetBody(params.imageBody)
